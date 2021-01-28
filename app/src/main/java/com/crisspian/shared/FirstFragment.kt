@@ -1,15 +1,16 @@
 package com.crisspian.shared
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.crisspian.shared.databinding.FragmentFirstBinding
-import com.crisspian.shared.model.Task
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -37,37 +38,27 @@ class FirstFragment : Fragment() {
         binding.rvTask.adapter = adapter
         binding.rvTask.layoutManager = LinearLayoutManager(context)
 
-        val task = Task(1,
-            "Mi primera Tarea 1",
-            "tarea de prueba 1",
-            "27-01-2020",
-            2,
-            false)
 
-        val task2 = Task(2,
-            "Mi primera Tarea 2",
-            "tarea de prueba 2",
-            "27-01-2020",
-            1,
-            false)
-
-        val task3 = Task(3,
-            "Mi primera Tarea 3",
-            "tarea de prueba 3",
-            "27-01-2020",
-            1,
-            true)
-
-        viewModel.inserTask(task)
-        viewModel.inserTask(task2)
-        viewModel.inserTask(task3)
 
         viewModel.allTask.observe(viewLifecycleOwner, Observer {
-            adapter.update(it)
+            it?.let {
+                adapter.update(it)
+            }
 
           //  println(it)
           //  Log.d("lista ",it.toString())
         } )
+        binding.fab.setOnClickListener{
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
+        adapter.selectesItem().observe(viewLifecycleOwner, Observer{
+            it?.let{
+                Log.d("Item Selected", it.title)
+                viewModel.selected(it)
+                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+
+            }
+        })
+        }
 
     }
-}

@@ -7,10 +7,15 @@ class TaskRepository(private val taskDao: TaskDao) {
     // este val contiene todos los datos de la BBDD
     val listAllTask: LiveData<List<Task>> = taskDao.getAllTask()
 
-    // funcion crea tarea BBDD
-    suspend fun createTask(task: Task){
+
+    suspend fun insertTask(task: Task) {
         taskDao.createTask(task)
     }
+
+    // funcion crea tarea BBDD
+  //  suspend fun createTask(task: Task){
+  //      taskDao.createTask(task)
+  //  }
 
     // funcion elimina UNA tarea BBDD
     suspend fun deleteTask(task: Task){
@@ -21,4 +26,5 @@ class TaskRepository(private val taskDao: TaskDao) {
     suspend fun deleteAllTask(){
         taskDao.deleteAllTask()
     }
+
 }
